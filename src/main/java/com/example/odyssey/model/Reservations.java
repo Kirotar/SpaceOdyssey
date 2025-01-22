@@ -28,17 +28,11 @@ public class Reservations {
     private Providers provider;
 
     @ManyToOne
-    @JoinColumn(name = "leg_id", nullable = false)
-    private Legs leg;
+    @JoinColumn(name = "route_id", nullable = false)
+    private Routes route;
 
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal price;
-
-    @Column(name = "travel_time", nullable = false)
-    private Duration travelTime;
-
-    @Column(name = "company_name", nullable = false)
-    private String companyName;
 
 
 }

@@ -1,7 +1,6 @@
 package com.example.odyssey.controller;
 
-import com.example.odyssey.model.BigPricelist;
-import com.example.odyssey.model.Pricelist;
+import com.example.odyssey.DTO.PricelistDTO;
 import com.example.odyssey.service.TravelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +33,7 @@ public class TravelController {
     }
 
     @PostMapping("/api/save-pricelist")
-    public ResponseEntity<?> savePricelist(@RequestBody Pricelist priceListData){
+    public ResponseEntity<?> savePricelist(@RequestBody PricelistDTO priceListData){
         return travelService.savePricelist(priceListData);
     }
 

@@ -16,22 +16,9 @@ import java.util.UUID;
 @Table(name = "pricelist")
 public class Pricelist {
 
-/*    @Id
+    @Id
     private UUID id;
 
     @Column(name = "valid_until", nullable = false)
-    private LocalDateTime validUntil;
-
-    @OneToMany(mappedBy = "pricelist", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private List<Legs> legs;
-}*/
-@Id
-private String id;  // Changed from UUID to String
-
-    @Column(name = "valid_until", nullable = false)
-    private OffsetDateTime validUntil;  // Changed from LocalDateTime to OffsetDateTime
-
-    @OneToMany(mappedBy = "pricelist", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Legs> legs;
+    private String validUntil;
 }

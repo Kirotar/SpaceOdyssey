@@ -15,12 +15,11 @@ import java.util.UUID;
 @ToString
 @Table(name = "providers")
 public class Providers {
-/*    @Id
+    @Id
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "leg_id", nullable = false)
-    private Legs leg;
+    @Column(name = "leg_id", nullable = false)
+    private UUID legId;
 
     @Column(name = "company_id", nullable = false)
     private UUID companyId;
@@ -32,37 +31,8 @@ public class Providers {
     private BigDecimal price;
 
     @Column(name = "flight_start", nullable = false)
-    private OffsetDateTime flightStart;
+    private String flightStart;
 
     @Column(name = "flight_end", nullable = false)
-    private OffsetDateTime flightEnd;
-
-    @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private List<Reservations> reservations;
-}*/
-@Id
-private String id;  // Changed from UUID to String
-
-    @ManyToOne
-    @JoinColumn(name = "leg_id", nullable = false)
-    private Legs leg;
-
-    @Column(name = "company_id", nullable = false)
-    private String companyId;  // Changed from UUID to String
-
-    @Column(name = "company_name", nullable = false)
-    private String companyName;
-
-    @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal price;
-
-    @Column(name = "flight_start", nullable = false)
-    private OffsetDateTime flightStart;
-
-    @Column(name = "flight_end", nullable = false)
-    private OffsetDateTime flightEnd;
-
-    @OneToMany(mappedBy = "provider", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reservations> reservations;
+    private String flightEnd;
 }
