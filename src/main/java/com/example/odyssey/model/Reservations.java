@@ -1,8 +1,7 @@
 package com.example.odyssey.model;
 import jakarta.persistence.*;
 import lombok.*;
-import java.math.BigDecimal;
-import java.time.Duration;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,8 +30,6 @@ public class Reservations {
     @JoinColumn(name = "route_id", nullable = false)
     private Routes route;
 
-    @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal price;
 
 
 }

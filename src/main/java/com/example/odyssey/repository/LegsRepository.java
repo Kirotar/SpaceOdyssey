@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface LegsRepository extends JpaRepository<Legs, String> {
+public interface LegsRepository extends JpaRepository<Legs, UUID> {
 }

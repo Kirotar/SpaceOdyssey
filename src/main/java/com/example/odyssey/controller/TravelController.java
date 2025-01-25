@@ -1,6 +1,7 @@
 package com.example.odyssey.controller;
 
 import com.example.odyssey.DTO.PricelistDTO;
+import com.example.odyssey.DTO.ReservationDTO;
 import com.example.odyssey.service.TravelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +21,21 @@ public class TravelController {
 
     @GetMapping("/api/travel-prices")
     public ResponseEntity<?> getTravelPrices() {
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-            String apiUrl = "https://cosmosodyssey.azurewebsites.net/api/v1.0/TravelPrices";
-            ResponseEntity<String> response = restTemplate.getForEntity(apiUrl, String.class);
-            return ResponseEntity.ok(response.getBody());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error fetching travel prices: " + e.getMessage());
-        }
+      return travelService.getTravelPrices();
     }
 
     @PostMapping("/api/save-pricelist")
-    public ResponseEntity<?> savePricelist(@RequestBody PricelistDTO priceListData){
-        return travelService.savePricelist(priceListData);
+    public ResponseEntity<?> savePricelist(){
+        return travelService.savePricelist();
     }
 
+    @PostMapping("/api/make-reservation")
+    public ResponseEntity<?> makeReservation(@RequestBody ReservationDTO reservationData){
+        return travelService.makeReservation(reservationData);
+    }
+
+    @GetMapping("/api/get-reservation")
+    public ResponseEntity<?> getReservation(){
+        return travelService.getReservation();
+    }
 }
