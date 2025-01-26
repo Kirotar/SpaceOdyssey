@@ -11,9 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -168,13 +166,42 @@ public class TravelService {
 
     }
 
-    public ResponseEntity<?> getReservation() {
+   public ResponseEntity<?> getReservation(String firstName, String lastName) {
 
-        try {
-            return ResponseEntity.ok().body("Reservation retrieved");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error retrieving reservation: " + e.getMessage());
-        }
-    }
+       try {
+           List<Reservations> reservations = reservationsRepository.findByFirstNameAndLastName(firstName, lastName);
+           List<Object[]> travelTimes = providersRepository.travelTime();
+
+           Map<UUID, Long> travelTimeMap = new HashMap<>();
+           for (Object[] result : travelTimes) {
+               UUID id = (UUID) result[0];
+               Long hours = ((Number) result[1]).longValue();
+               travelTimeMap.put(id, hours);
+           }
+
+           if (reservations.isEmpty()) {
+               return ResponseEntity.notFound().build();
+           }
+           List<ReservationResponseDTO> responseList = reservations.stream()
+                   .map(reservation -> {
+                       ReservationResponseDTO dto = new ReservationResponseDTO();
+                       dto.setFirstName(reservation.getFirstName());
+                       dto.setLastName(reservation.getLastName());
+                       dto.setRoute(reservation.getRoute().getFromName() + " to " + reservation.getRoute().getToName());
+                       dto.setFlightStart(reservation.getProvider().getFlightStart());
+                       dto.setFlightEnd(reservation.getProvider().getFlightEnd());
+                       dto.setQuotedPrice(reservation.getProvider().getPrice());
+                       dto.setTravelTimeHours(travelTimeMap.get(reservation.getProvider().getId()));
+                       dto.setCompanyName(reservation.getProvider().getCompanyName());
+                       return dto;
+                   })
+                   .collect(Collectors.toList());
+
+           return ResponseEntity.ok(responseList);
+       } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body("Error retrieving reservation: " + e.getMessage());
+       }
+   }
+
 }
