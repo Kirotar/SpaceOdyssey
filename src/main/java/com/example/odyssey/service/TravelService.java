@@ -24,19 +24,21 @@ public class TravelService {
     private final PricelistRepository pricelistRepository;
     private final RoutesRepository routesRepository;
     private final ReservationsRepository reservationsRepository;
+    private final RestTemplate restTemplate;
+
     private static final String API_URL = "https://cosmosodyssey.azurewebsites.net/api/v1.0/TravelPrices";
 
-    public TravelService(ProvidersRepository providersRepository, LegsRepository legsRepository, PricelistRepository pricelistRepository, RoutesRepository routesRepository, ReservationsRepository reservationsRepository) {
+    public TravelService(ProvidersRepository providersRepository, LegsRepository legsRepository, PricelistRepository pricelistRepository, RoutesRepository routesRepository, ReservationsRepository reservationsRepository, RestTemplate restTemplate) {
         this.providersRepository = providersRepository;
         this.legsRepository = legsRepository;
         this.pricelistRepository = pricelistRepository;
         this.routesRepository = routesRepository;
         this.reservationsRepository = reservationsRepository;
+        this.restTemplate = restTemplate;
+
     }
 
     public ResponseEntity<?> getTravelPrices() {
-        RestTemplate restTemplate = new RestTemplate();
-
         try {
             ResponseEntity<String> response = restTemplate.getForEntity(API_URL, String.class);
             return ResponseEntity.ok(response.getBody());
@@ -48,8 +50,6 @@ public class TravelService {
 
     @Scheduled(fixedRate = 900000)
     public ResponseEntity<?> savePricelist() {
-        RestTemplate restTemplate = new RestTemplate();
-
         try {
             ResponseEntity<PricelistDTO> response = restTemplate.getForEntity(API_URL, PricelistDTO.class);
             PricelistDTO priceListData = response.getBody();
@@ -169,7 +169,7 @@ public class TravelService {
    public ResponseEntity<?> getReservation(String firstName, String lastName) {
 
        try {
-           List<Reservations> reservations = reservationsRepository.findByFirstNameAndLastName(firstName, lastName);
+           List<Reservations> reservations = reservationsRepository.findByFirstNameIgnoreCaseAndLastNameIgnoreCase(firstName, lastName);
            List<Object[]> travelTimes = providersRepository.travelTime();
 
            Map<UUID, Long> travelTimeMap = new HashMap<>();

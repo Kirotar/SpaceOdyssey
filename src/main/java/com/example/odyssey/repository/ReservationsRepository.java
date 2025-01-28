@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ReservationsRepository extends JpaRepository<Reservations, Long> {
-    List<Reservations> findByFirstNameAndLastName(String firstName, String lastName);
+    List<Reservations> findByFirstNameIgnoreCaseAndLastNameIgnoreCase(String firstName, String lastName);
 
 }
