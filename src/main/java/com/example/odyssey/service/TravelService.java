@@ -59,13 +59,13 @@ public class TravelService {
                 return ResponseEntity.badRequest().body("Invalid pricelist data");
             }
 
-            // 1. Save pricelist
+            // Save pricelist
             Pricelist pricelist = new Pricelist();
             pricelist.setId(UUID.fromString(priceListData.getId()));
             pricelist.setValidUntil(priceListData.getValidUntil());
             pricelistRepository.save(pricelist);
 
-            // 2. Prepare collections for batch save
+            // Prepare collections for batch save
             List<Legs> legsToSave = new ArrayList<>();
             List<Routes> routesToSave = new ArrayList<>();
             List<Providers> providersToSave = new ArrayList<>();
@@ -103,13 +103,13 @@ public class TravelService {
                 }
             }
 
-            // 3. Batch save
+            // Batch save
             legsRepository.saveAll(legsToSave);
             routesRepository.saveAll(routesToSave);
             providersRepository.saveAll(providersToSave);
 
 
-            // 4. Clean up old pricelists (keep only last 15)
+            // Clean up old pricelists (keep only last 15)
             cleanupOldPricelists();
 
             return ResponseEntity.ok().body("Pricelist saved successfully");
